@@ -1,0 +1,14 @@
+<ul id="jam-playlist-container">
+{% if playlists is not empty %}
+<li><img class="playlist-icon" src="{{ asset('bundles/cogimixjamendo/images/jamendo-icon.png') }}"/><a data-toggle="collapse"  href="#jam-playlist-list"> Jamendo</a></li>
+{% endif %}
+<ul id="jam-playlist-list" class="collapse out">
+{% if playlists is not empty %}
+    {% for item in playlists %}
+        {% include 'CogimixJamendoBundle:Playlist:item.html.twig' %}
+    {% endfor %}
+{% else %}
+<li>No Jamendo playlist</li>
+{% endif %}
+</ul>
+</ul>

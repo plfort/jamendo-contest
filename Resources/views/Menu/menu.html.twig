@@ -1,0 +1,12 @@
+{% spaceless %}
+<li id="jamendo-menu" class="dropdown-submenu">
+    <a href="#">Jamendo</a>
+    <ul class="dropdown-menu">
+    {% if not is_granted('ROLE_JAMENDO') %}
+    <li>{% include 'CogimixJamendoBundle:Login:loginLink.html.twig' %}</li>
+    {% else %}
+         <li>{% include 'CogimixJamendoBundle:Login:logoutLink.html.twig' %}</li>
+    {% endif %}
+    </ul>
+</li>
+{% endspaceless %}

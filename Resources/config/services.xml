@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+	<!-- <parameters> <parameter key="cogimix_jamendo.example.class">Cogipix\CogimixJamendoBundle\Example</parameter> 
+		</parameters> -->
+	<services>
+		<service id="cogimix_jamendo.jamendo_api" class="Cogipix\CogimixJamendoBundle\Services\JamendoApi">
+			<argument>%jamendo.api.key%</argument>
+			<argument>%jamendo.api.secret%</argument>
+		</service>
+		<service id="cogimix_jamendo.result_builder" class="Cogipix\CogimixJamendoBundle\Services\ResultBuilder" />
+		
+		<service id="jamendo_music.search_service" parent="abstract_music_search"
+			class="Cogipix\CogimixJamendoBundle\Services\JamendoMusicSearch">
+			<argument type="service" id="cogimix_jamendo.jamendo_api" />
+			<argument type="service" id="cogimix_jamendo.result_builder" />
+			<tag name="cogimix.plugin" />
+		</service>	 
+		<service id="cogimix_jamendo.access_token_manager" parent="abstract_manager" class="Cogipix\CogimixJamendoBundle\Manager\AccessTokenJamendoManager">
+		      <argument type="service" id="doctrine.orm.entity_manager" />
+		     <argument type="service" id="cogimix_jamendo.jamendo_api" />
+		   
+		    </service>
+	
+		 <service id="jamendo_music.playlist_renderer" class="Cogipix\CogimixJamendoBundle\ViewHooks\Playlist\PlaylistRenderer">
+		     <argument type="service" id="cogimix_jamendo.access_token_manager" />
+		     <argument type="service" id="cogimix_jamendo.jamendo_api" />
+            
+                <tag name="cogimix.playlist_renderer"/>
+                <tag name="securitycontext_aware"/>
+           </service>
+		
+		<service id="jamendo_music.widget_renderer"
+			class="Cogipix\CogimixJamendoBundle\ViewHooks\Widget\WidgetRenderer">
+			<tag name="cogimix.widget_renderer" />
+		</service>
+		<service id="jamendo_music.jsimport_renderer"
+			class="Cogipix\CogimixJamendoBundle\ViewHooks\Javascript\JavascriptImportRenderer">
+			<tag name="cogimix.jsimport_renderer" />
+		</service>
+		
+		           <service id="cogimix_jamendo.menu_renderer" class="Cogipix\CogimixJamendoBundle\ViewHooks\Menu\MenuRenderer">
+                <tag name="cogimix.menu_renderer"/>
+           </service>
+	</services>
+
+</container>
