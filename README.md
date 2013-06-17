@@ -2,6 +2,7 @@
 
 Jamendo plugin for Cogimix
 ==============================
+Note : Since friday June 14, listen songs from Grooveshark is temporarily unavailable ...
 
 Cogimix is an online music player that lets you search music and create playlists from multiple provider.
 You can agregate songs from Grooveshark, Youtube, Deezer, Soundcloud and **Jamendo**.
