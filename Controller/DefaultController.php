@@ -48,7 +48,7 @@ class DefaultController extends Controller
         $success = false;
         if($accessTokenJamendo !== null){
             $success=true;
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getManager();
             $user = $this->getUser();
             $AccessTokenJamendoDb = $em->getRepository('CogimixJamendoBundle:AccessTokenJamendo')->findOneByUser($user);
             if($AccessTokenJamendoDb !=null){

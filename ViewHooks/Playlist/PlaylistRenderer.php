@@ -1,5 +1,7 @@
 <?php
 namespace Cogipix\CogimixJamendoBundle\ViewHooks\Playlist;
+use Cogipix\CogimixCommonBundle\Utils\LoggerAwareInterface;
+
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
@@ -12,22 +14,26 @@ use Cogipix\CogimixCommonBundle\ViewHooks\Playlist\PlaylistRendererInterface;
  * @author plfort - Cogipix
  *
  */
-class PlaylistRenderer implements PlaylistRendererInterface,SecurityContextAwareInterface{
+class PlaylistRenderer implements PlaylistRendererInterface,
+        SecurityContextAwareInterface, LoggerAwareInterface
+{
 
     private $accessTokenManager;
     private $jamendoApi;
     private $securityContext;
+    private $logger;
 
-
-    public function __construct($accessTokenManager,$jamendoApi){
-       $this->accessTokenManager=$accessTokenManager;
-       $this->jamendoApi= $jamendoApi;
+    public function __construct($accessTokenManager, $jamendoApi)
+    {
+        $this->accessTokenManager = $accessTokenManager;
+        $this->jamendoApi = $jamendoApi;
     }
 
     /**
      * Template file for rendering playlists list
      */
-    public function getListTemplate(){
+    public function getListTemplate()
+    {
         return 'CogimixJamendoBundle:Playlist:list.html.twig';
     }
 
@@ -35,19 +41,22 @@ class PlaylistRenderer implements PlaylistRendererInterface,SecurityContextAware
      * Get the user's playlists from Jamendo
      * @return array
      */
-    public function getPlaylists(){
-        $user=$this->getCurrentUser();
-        if($user!==null){
+    public function getPlaylists()
+    {
+        $user = $this->getCurrentUser();
+        if ($user !== null) {
 
-            $jamendoToken = $this->accessTokenManager->getUserAccessToken($user);
-            if($jamendoToken!==null){
+            $jamendoToken = $this->accessTokenManager
+                    ->getUserAccessToken($user);
+            if ($jamendoToken !== null) {
 
-                $playlists= $this->jamendoApi->getUserPlaylists($jamendoToken);
+                $playlists = $this->jamendoApi->getUserPlaylists($jamendoToken);
 
-                if($playlists !==false){
+                if ($playlists !== false) {
                     return $playlists;
-                }else{
-                    echo $this->jamendoApi->lastError;
+                } else {
+                    $this->logger->err('Jamendo Error : User '.$user->getId().' '.$this->jamendoApi->lastError);
+                   // echo $this->jamendoApi->lastError;
                 }
             }
         }
@@ -58,20 +67,28 @@ class PlaylistRenderer implements PlaylistRendererInterface,SecurityContextAware
     public function setSecurityContext(
             SecurityContextInterface $securityContext)
     {
-        $this->securityContext=$securityContext;
+        $this->securityContext = $securityContext;
 
     }
 
-    protected function getCurrentUser() {
+    protected function getCurrentUser()
+    {
         $user = $this->securityContext->getToken()->getUser();
-        if ($user instanceof AdvancedUserInterface){
+        if ($user instanceof AdvancedUserInterface) {
             return $user;
         }
 
         return null;
     }
 
-    public function getTag(){
+    public function getTag()
+    {
         return 'jamendo';
     }
+    public function setLogger($logger)
+    {
+       $this->logger = $logger;
+
+    }
+
 }

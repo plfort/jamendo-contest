@@ -31,6 +31,7 @@
             
                 <tag name="cogimix.playlist_renderer"/>
                 <tag name="securitycontext_aware"/>
+                 <tag name="logger_aware"/>
            </service>
 		
 		<service id="jamendo_music.widget_renderer"

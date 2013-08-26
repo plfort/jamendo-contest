@@ -186,7 +186,7 @@ $(document).ready(function(){
     $(".jam-playlist-item").draggable(draggableOptionsPlaylistListItem);
 });
 
-
+iconMap['jam'] = 'bundles/cogimixjamendo/images/jamendo-icon.png';
 droppedHookArray['jam-playlist'] = function(droppedItem,callback){
 		var playlistId=droppedItem.data('id');
 		$.get(Routing.generate('_jamendo_playlist_songs',{'id':playlistId}),function(response){

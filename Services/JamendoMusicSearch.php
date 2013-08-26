@@ -48,7 +48,16 @@ class JamendoMusicSearch extends AbstractMusicSearch
         }else{
             $this->logger->err($this->jamendoApi->lastError);
         }
+    }
 
+    protected function executePopularQuery(){
+       $output= $this->jamendoApi->popularTracks();
+        if($output !== false){
+
+            return $this->parseResponse($output);
+        }else{
+            $this->logger->err($this->jamendoApi->lastError);
+        }
 
     }
 

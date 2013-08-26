@@ -48,8 +48,29 @@ class JamendoApi
             $this->lastError = curl_error($c);
             return false;
         }
+        //var_dump($output);die();
+        return json_decode($output,true);
+    }
 
-        return json_decode($output, true);
+    public function popularTracks($limit = 50)
+    {
+        $parameters = sprintf('&limit=%d&order=popularity_week',$limit);
+        $result = $this->callApi('tracks/', null, $parameters);
+        if ($result != false) {
+            if (isset($result['headers']) && isset($result['headers']['code'])) {
+                if ($result['headers']['code'] === 0) {
+                    if (isset($result['results'])) {
+                        return $result['results'];
+                    } else {
+                        return array();
+                    }
+                } else {
+                    $this->lastError = $this
+                    ->mapErrorCode($result['headers']['code']);
+                }
+            }
+        }
+        return false;
     }
 
     public function searchTracks($query, $limit = 30)
@@ -129,16 +150,22 @@ class JamendoApi
         }
 
         $result = $this->callApi('playlists/', 'tracks/', $parameters);
+        //var_dump($result);die();
         if ($result != false) {
             if (isset($result['headers']) && isset($result['headers']['code'])) {
                 if ($result['headers']['code'] === 0) {
                     if (isset($result['results'])) {
+                       // var_dump($result);die();
                         if (count($result['results']) > 0) {
 
                             $trackIds = array();
-                            foreach ($result['results'] as $trackItem) {
-                                $trackIds[] = $trackItem['tracks_id'];
+                            if(isset($result['results'][0]['tracks']) && count($result['results'][0]['tracks'])>0){
+                                foreach ($result['results'][0]['tracks'] as $k=>$trackItem) {
+
+                                    $trackIds[] = $trackItem['id'];
+                                }
                             }
+
 
                             if (!empty($trackIds)) {
                                 $tracksDetails = $this->getTracksFromIds($trackIds,$accessToken);
