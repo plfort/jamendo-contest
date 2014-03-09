@@ -52,7 +52,7 @@ class ResultBuilder implements ResultBuilderInterface
     }
 
     public function getDefaultIcon(){
-        return 'bundles/cogimixjamendo/images/jamendo-icon.png';
+        return '/bundles/cogimixjamendo/images/jamendo-icon.png';
     }
 
 }

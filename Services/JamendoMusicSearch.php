@@ -84,7 +84,7 @@ class JamendoMusicSearch extends AbstractMusicSearch
 
     public function getDefaultIcon()
     {
-        return 'bundles/cogimixjamendo/images/jamendo-icon.png';
+        return '/bundles/cogimixjamendo/images/jamendo-icon.png';
     }
 
 

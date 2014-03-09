@@ -1,13 +1,14 @@
 <?php
 namespace Cogipix\CogimixJamendoBundle\ViewHooks\Menu;
 use Cogipix\CogimixCommonBundle\ViewHooks\Menu\MenuItemInterface;
+use Cogipix\CogimixCommonBundle\ViewHooks\Menu\AbstractMenuItem;
 
 /**
  * Use by the core to display the menu (login/logout)
  * @author plfort - Cogipix
  *
  */
-class MenuRenderer implements MenuItemInterface
+class MenuItem extends AbstractMenuItem
 {
     /**
      * Temaplet file containing the menu
@@ -17,5 +18,9 @@ class MenuRenderer implements MenuItemInterface
     {
         return 'CogimixJamendoBundle:Menu:menu.html.twig';
 
+    }
+
+    public function getName(){
+    	return 'jamendo';
     }
 }

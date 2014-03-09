@@ -43,8 +43,8 @@
 			<tag name="cogimix.jsimport_renderer" />
 		</service>
 		
-		           <service id="cogimix_jamendo.menu_renderer" class="Cogipix\CogimixJamendoBundle\ViewHooks\Menu\MenuRenderer">
-                <tag name="cogimix.menu_renderer"/>
+	   <service id="cogimix_jamendo.menu_renderer" class="Cogipix\CogimixJamendoBundle\ViewHooks\Menu\MenuItem">
+                <tag name="cogimix.menu_item"/>
            </service>
 	</services>
 

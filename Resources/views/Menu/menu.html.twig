@@ -1,7 +1,7 @@
 {% spaceless %}
-<li id="jamendo-menu" class="dropdown-submenu">
+<li id="jamendo-menu">
     <a href="#">Jamendo</a>
-    <ul class="dropdown-menu">
+    <ul>
     {% if not is_granted('ROLE_JAMENDO') %}
     <li>{% include 'CogimixJamendoBundle:Login:loginLink.html.twig' %}</li>
     {% else %}
