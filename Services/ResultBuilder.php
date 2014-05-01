@@ -16,6 +16,7 @@ class ResultBuilder implements ResultBuilderInterface
         //need more tests
         $item =null;
         if(!empty($jamendoTrack)){
+        	
             $item = new JamendoResult();
             $item->setId($jamendoTrack['id']);
             $item->setArtist($jamendoTrack['artist_name']);
@@ -24,6 +25,7 @@ class ResultBuilder implements ResultBuilderInterface
             $item->setUrl($jamendoTrack['audio']);
             $item->setTag($this->getResultTag());
             $item->setIcon($this->getDefaultIcon());
+            $item->setDuration($jamendoTrack['duration']);
 
         }
         return $item;
