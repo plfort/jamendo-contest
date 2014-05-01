@@ -20,10 +20,8 @@
 			<tag name="cogimix.plugin" />
 		</service>	 
 		<service id="cogimix_jamendo.access_token_manager" parent="abstract_manager" class="Cogipix\CogimixJamendoBundle\Manager\AccessTokenJamendoManager">
-		      <argument type="service" id="doctrine.orm.entity_manager" />
-		     <argument type="service" id="cogimix_jamendo.jamendo_api" />
-		   
-		    </service>
+		      <argument type="service" id="cogimix_jamendo.jamendo_api" /> 
+		 </service>
 	
 		 <service id="jamendo_music.playlist_renderer" class="Cogipix\CogimixJamendoBundle\ViewHooks\Playlist\PlaylistRenderer">
 		     <argument type="service" id="cogimix_jamendo.access_token_manager" />

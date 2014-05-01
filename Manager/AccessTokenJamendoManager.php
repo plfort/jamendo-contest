@@ -12,25 +12,25 @@ use Cogipix\CogimixCommonBundle\Utils\LoggerAwareInterface;
 class AccessTokenJamendoManager extends AbstractManager
 {
 
-    private $om;
+    
     private $jamendoApi;
 
-    public function __construct($om, $jamendoApi)
+    public function __construct($jamendoApi)
     {
-        $this->om = $om;
+        
         $this->jamendoApi = $jamendoApi;
     }
 
     public function removeAccessToken($user)
     {
-        $jamendoToken = $this->om
+        $jamendoToken = $this->em
                 ->getRepository('CogimixJamendoBundle:AccessTokenJamendo')
                 ->findOneByUser($user);
         if ($jamendoToken !== null) {
-            $this->om->remove($jamendoToken);
+            $this->em->remove($jamendoToken);
         }
         $user->removeRole('ROLE_JAMENDO');
-        $this->om->flush();
+        $this->em->flush();
         return true;
 
     }
@@ -40,7 +40,7 @@ class AccessTokenJamendoManager extends AbstractManager
      */
     public function getUserAccessToken($user)
     {
-        $jamendoToken = $this->om
+        $jamendoToken = $this->em
                 ->getRepository('CogimixJamendoBundle:AccessTokenJamendo')
                 ->findOneByUser($user);
         if ($jamendoToken !== null) {
@@ -54,9 +54,11 @@ class AccessTokenJamendoManager extends AbstractManager
                                 ->setRefreshToken($newToken->getRefreshToken());
                         $jamendoToken->setExpiresIn($newToken->getExpiresIn());
                         $jamendoToken->setCreatedDate(new \DateTime());
-                        $this->om->flush();
+                        $this->em->flush();
                     } else {
+                        $this->logger->err("Error refreshtoken");
                         $this->logger->err($this->jamendoApi->lastError);
+                        $this->removeAccessToken($user);
                     }
                 } catch (\Exception $ex) {
                     $this->logger->err($ex->getMessage());
@@ -74,7 +76,7 @@ class AccessTokenJamendoManager extends AbstractManager
         }
         $accessToken->setUser($user);
         $user->addRole('ROLE_JAMENDO');
-        $this->om->persist($accessToken);
+        $this->em->persist($accessToken);
 
     }
 
