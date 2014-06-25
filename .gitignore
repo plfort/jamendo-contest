@@ -1,2 +1,5 @@
 jamendo_api_credentials.conf
 
+/.settings/
+/.buildpath
+/.project
