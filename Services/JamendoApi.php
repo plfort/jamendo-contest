@@ -87,7 +87,7 @@ class JamendoApi
     {
         $parameters = array(
             'limit'=>$limit,
-            'namesearch'=>$query
+            'search'=>$query
         );
         
        // $parameters = sprintf('&namesearch=%s&limit=%d', urlencode($query), $limit);
