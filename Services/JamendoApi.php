@@ -20,6 +20,7 @@ class JamendoApi
         $this->clientId = $key;
         $this->secret = $secret;
     }
+    
     /**
      * Call Jamendo API (v3)
      * @param unknown_type $entity
@@ -27,13 +28,18 @@ class JamendoApi
      * @param unknown_type $parameters
      * @return array or false
      */
-    private function callApi($entity, $subentity = null, $parameters = '')
+    private function callApi($entity, $subentity = null, $parameters = array())
     {
         if ($entity == null) {
             return false;
         }
-        $baseParameters = sprintf("?client_id=%s&format=json", $this->clientId)
-                . $parameters;
+        $paramtersString = '';
+        foreach($parameters as $key => $value){
+            $paramtersString.= '&'.$key.'='.urlencode($value);
+        }
+        
+        $baseParameters = sprintf("?client_id=%s&format=json&%s", $this->clientId,$paramtersString);
+                
 
         $entityPart = $entity;
         if ($subentity !== null) {
@@ -54,7 +60,11 @@ class JamendoApi
 
     public function popularTracks($limit = 50)
     {
-        $parameters = sprintf('&limit=%d&order=popularity_week',$limit);
+        $parameters = array(
+            'limit'=>$limit,
+            'order'=>'popularity_week'
+        );
+      //  $parameters = sprintf('&limit=%d&order=popularity_week',$limit);
         $result = $this->callApi('tracks/', null, $parameters);
         if ($result != false) {
             if (isset($result['headers']) && isset($result['headers']['code'])) {
@@ -75,7 +85,12 @@ class JamendoApi
 
     public function searchTracks($query, $limit = 30)
     {
-        $parameters = sprintf('&namesearch=%s&limit=%d', $query, $limit);
+        $parameters = array(
+            'limit'=>$limit,
+            'namesearch'=>$query
+        );
+        
+       // $parameters = sprintf('&namesearch=%s&limit=%d', urlencode($query), $limit);
         $result = $this->callApi('tracks/', null, $parameters);
         if ($result != false) {
             if (isset($result['headers']) && isset($result['headers']['code'])) {
@@ -96,9 +111,15 @@ class JamendoApi
 
     public function getUserPlaylists($accessToken)
     {
-        $parameters = sprintf('&access_token=%s&limit=%d',
-                $accessToken->getAccessToken(), 30);
+        $parameters = array(
+            'limit'=>50,
+            'access_token'=>$accessToken->getAccessToken()
+        );
+        
+      /*  $parameters = sprintf('&access_token=%s&limit=%d',
+                $accessToken->getAccessToken(), 30);*/
         $result = $this->callApi('playlists/', null, $parameters);
+       
         if ($result != false) {
 
             if (isset($result['headers']) && isset($result['headers']['code'])) {
@@ -120,8 +141,11 @@ class JamendoApi
 
     public function getTracksFromIds(array $ids,$accessToken = null)
     {
-
-        $parameters = sprintf('&limit=%d&id=%s', 100, implode('+', $ids));
+        $parameters = array(
+            'limit'=>100,
+            'id'=>implode('+', $ids)
+        );
+        //$parameters = sprintf('&limit=%d&id=%s', 100, implode('+', $ids));
         $result = $this->callApi('tracks/', null, $parameters);
 
         if (isset($result['headers']) && isset($result['headers']['code'])) {
@@ -142,11 +166,16 @@ class JamendoApi
 
     public function getPlaylistTracks($playlistId,$accessToken=null)
     {
+        $parameters = array(   
+            'limit'=>100,
+            'id'=>$playlistId);
         if($accessToken!==null){
-            $parameters = sprintf('&access_token=%s&limit=%d&id=%s',
-                    $accessToken->getAccessToken(), 100, $playlistId);
+            $parameters['access_token'] = $accessToken->getAccessToken();
+          /*  $parameters = sprintf('&access_token=%s&limit=%d&id=%s',
+                    $accessToken->getAccessToken(), 100, $playlistId);*/
         }else{
-            $parameters = sprintf('&limit=%d&id=%s', 100, $playlistId);
+            
+            //$parameters = sprintf('&limit=%d&id=%s', 100, $playlistId);
         }
 
         $result = $this->callApi('playlists/', 'tracks/', $parameters);
