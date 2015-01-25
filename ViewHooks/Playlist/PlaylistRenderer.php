@@ -91,4 +91,9 @@ class PlaylistRenderer implements PlaylistRendererInterface,
 
     }
 
+    public function getRenderPlaylistsParameters()
+    {
+        return array('playlists'=>$this->getPlaylists());
+    }
+
 }
