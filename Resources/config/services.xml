@@ -28,7 +28,7 @@
 		     <argument type="service" id="cogimix_jamendo.jamendo_api" />
             
                 <tag name="cogimix.playlist_renderer"/>
-                <tag name="securitycontext_aware"/>
+                <tag name="tokenstorage_aware"/>
                  <tag name="logger_aware"/>
            </service>
 		

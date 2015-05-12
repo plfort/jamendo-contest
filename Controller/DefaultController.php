@@ -61,7 +61,7 @@ class DefaultController extends Controller
 
 
             $em->flush();
-            $this->get('security.context')->getToken()->setAuthenticated(false);
+            $this->get('security.token_storage')->getToken()->setAuthenticated(false);
         }else{
             $this->get('logger')->err($jamendoApi->lastError);
         }
@@ -80,7 +80,7 @@ class DefaultController extends Controller
         $accessTokenManager = $this->get('cogimix_jamendo.access_token_manager');
         if($accessTokenManager->removeAccessToken($this->getUser()) == true ){
 
-            $this->get('security.context')->getToken()->setAuthenticated(false);
+            $this->get('security.token_storage')->getToken()->setAuthenticated(false);
             $response->setSuccess(true);
             $response->addData('loginLink', $this->renderView('CogimixJamendoBundle:Login:loginLink.html.twig'));
         }
