@@ -102,7 +102,8 @@ class DefaultController extends Controller
             $tracks=$jamendoApi->getPlaylistTracks($id,$accessToken);
             if($tracks){
                 $response->setSuccess(true);
-                $response->addData('tracks', $resultBuilder->createArrayFromJamendoTracks($tracks));
+                $songs = $this->get('cogimix.song_manager')->insertAndGetSongs($resultBuilder->createArrayFromJamendoTracks($tracks));
+                $response->addData('tracks', $songs);
             }
         }else{
             $this->get('logger')->err('No Jamendo accesstoken');
